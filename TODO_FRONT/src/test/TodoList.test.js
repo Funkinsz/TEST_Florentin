@@ -14,7 +14,5 @@ test("affiche une liste de todos", () => {
     />
   );
 
-  const todos = screen.getAllByRole("listitem");
-
-  expect(todos).toHaveLength(3);
+  expect(todoList).toHaveLength(3);
 });

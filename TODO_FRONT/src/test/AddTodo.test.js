@@ -15,10 +15,10 @@ describe("ajout d'une tâche", () => {
     // creation d'une simulation qui surveille les appel à object
     // il permet de lire l'object avec l'id apres qu'il soit envoyé en BDD
     jest.spyOn(global, "fetch").mockImplementation(() =>
-      Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve({ ...mockTodo, id: mockId }),
-      })
+    Promise.resolve({
+      ok: true,
+      json: () => Promise.resolve({ ...mockTodo, id: mockId }),
+    })
     );
 
     // Selectionne l'input present dans le component
