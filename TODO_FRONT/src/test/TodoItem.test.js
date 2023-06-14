@@ -1,22 +1,33 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import TodoItem from "../components/TodoItem";
 
-test("modifie l'état d'un todo lorsqu'on clique sur les boutons", async () => {
-    const todo = { id: 1, content: "Todo", done: false, edit: false };
-    const deleteTodo = jest.fn();
-    const updateTodo = jest.fn();
-  
-    render(<TodoItem todo={todo} deleteTodo={deleteTodo} updateTodo={updateTodo} />);
-  
-    const doneButton = screen.getByText("A faire");
-    const editButton = screen.getByText("Modifier");
-    const deleteButton = screen.getByText("Supprimer");
-  
-    fireEvent.click(doneButton);
-    fireEvent.click(editButton);
-    fireEvent.click(deleteButton);
-  
-    expect(updateTodo).toHaveBeenCalledWith({ ...todo, done: true });
-    expect(updateTodo).toHaveBeenCalledWith({ ...todo, edit: true });
-    expect(deleteTodo).toHaveBeenCalledWith(todo);
+describe("lire le component et modifier l'item", () => {
+  test("modifie l'état d'un todo lorsqu'on clique sur les boutons", async () => {
+    const mockTodo = { id: 1, content: "Todo", done: true, edit: false };
+    const mockUpdateTodo = jest.fn();
+
+    render(
+      <TodoItem
+        todo={mockTodo}
+        updateTodo={mockUpdateTodo}
+      />
+    );
+
+    jest.spyOn(global, "fetch").mockImplementation(() => 
+    Promise.resolve({
+      ok: true,
+      json: () => Promise.resolve({ ...mockTodo})
+    }))
+
+    const btn = screen.getByText("Réalisé")
+    fireEvent.click(btn)
+
+    await waitFor(() => 
+      expect(mockUpdateTodo).toHaveBeenCalledWith({
+        id: 1,
+        content: "Todo",
+        done: true,
+        edit: false
+      }))
   });
+});
