@@ -36,7 +36,9 @@ export default function TodoItem({ todo, deleteTodo, updateTodo }) {
     }
   }
   return (
-    <li className="d-flex justify-content-center align-items-center p10 mb10">
+    <li
+      className="d-flex justify-content-center align-items-center p10 mb10"
+      data-itemid="todo-item">
       <span className="flex-fill mr10">
         {todo.content} {todo.done && "✔️"}
       </span>
@@ -46,8 +48,7 @@ export default function TodoItem({ todo, deleteTodo, updateTodo }) {
             e.stopPropagation();
             modifyTodo({ ...todo, done: !todo.done });
           }}
-          className="btn btn-primary mr10"
-        >
+          className="btn btn-primary mr10">
           {todo.done ? "Réalisé" : "A faire"}
         </button>
         <button
@@ -55,13 +56,13 @@ export default function TodoItem({ todo, deleteTodo, updateTodo }) {
             e.stopPropagation();
             modifyTodo({ ...todo, edit: !todo.edit });
           }}
-          className="btn btn-primary mr10"
-        >
+          className="btn btn-primary mr10">
           Modifier
         </button>
         <button
           onClick={() => handleDeleteTodo(todo)}
           className="btn btn-primary-reverse mr10"
+          data-testid='delete-button'  
         >
           Supprimer
         </button>
